@@ -53,6 +53,9 @@ public class RelevanceService {
 
     public ExtensionSearch toSearchEntry(Extension extension, SearchStats stats) {
         var latest = repositories.findLatestVersion(extension,  null, false, true);
+        if (latest == null) {
+            return null;
+        }
         var targetPlatforms = repositories.findExtensionTargetPlatforms(extension);
         var entry = extension.toSearch(latest, targetPlatforms);
         entry.setRating(calculateRating(extension, stats));
