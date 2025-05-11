@@ -209,8 +209,12 @@ public class ElasticSearchService implements ISearchService {
         try {
             rwLock.writeLock().lock();
             var stats = new SearchStats(repositories);
+            var item = relevanceService.toSearchEntry(extension, stats);
+            if (item == null) {
+                return;
+            }
             var indexQuery = new IndexQueryBuilder()
-                    .withObject(relevanceService.toSearchEntry(extension, stats))
+                    .withObject(item)
                     .build();
             var indexOps = searchOperations.indexOps(ExtensionSearch.class);
             searchOperations.index(indexQuery, indexOps.getIndexCoordinates());
