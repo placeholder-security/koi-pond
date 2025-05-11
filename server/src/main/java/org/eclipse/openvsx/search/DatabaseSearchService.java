@@ -109,8 +109,11 @@ public class DatabaseSearchService implements ISearchService {
             searchEntries = matchingExtensions.stream().map(extension -> {
                 var latest = repositories.findLatestVersion(extension, null, false, true);
                 var targetPlatforms = repositories.findExtensionTargetPlatforms(extension);
+                if (latest == null) {
+                    return null;
+                }
                 return extension.toSearch(latest, targetPlatforms);
-            });
+            }).filter(Objects::nonNull);
         }
 
         var comparators = new HashMap<>(Map.of(
