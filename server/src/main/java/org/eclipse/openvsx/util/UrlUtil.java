@@ -146,7 +146,7 @@ public final class UrlUtil {
     public static String getBaseUrl() {
         try {
             var requestAttrs = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-            return getBaseUrl(requestAttrs.getRequest());
+            return getBaseUrl(requestAttrs.getRequest()).replace(":80", "");
         } catch (IllegalStateException e) {
             // method is called outside of web request context
             return "";
